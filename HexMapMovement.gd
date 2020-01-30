@@ -19,12 +19,18 @@ func _process(delta):
 	if character.position != _tile_pos:
 		points_tiles.clear()
 		var _path = PoolVector2Array([character.position, _tile_pos])
-		movement_line.points = _path
 		if Input.is_action_just_pressed("move"):
 			character.position = _tile_pos
 		points_tiles.set_cellv(tiles.world_to_map(character.position), 2)
 		points_tiles.set_cellv(tiles.world_to_map(_mouse_pos), 2)
 		print("Distance: ", cube_distance(charpos_in_cube, mousepos_in_cube))
+		var _cube_points = cube_linedraw(charpos_in_cube, mousepos_in_cube)
+		var _points = []
+		for i in _cube_points:
+			_points.append(tiles.map_to_world(cube_to_oddq(i))+CENTER_OF_HEX)
+		_path = PoolVector2Array(_points)
+		movement_line.points = _path
+		print(_path)
 		print('----- -----')
 
 func cube_distance(a, b):
@@ -51,3 +57,36 @@ func axial_to_cube(_hex: Vector2):
 	var z0 = _hex.y
 	var y0 = -x0-z0
 	return Vector3(x0, y0, z0)
+
+func cube_linedraw(a, b):
+	var N = cube_distance(a, b)
+	var results = []
+	for i in range(0, N+1):
+		results.append(cube_round(cube_lerp(a, b, 1.0/N * i)))
+	return results
+
+func cube_lerp(a, b, t):
+	return Vector3(lerp_axis(a.x, b.x, t), 
+				   lerp_axis(a.y, b.y, t),
+				   lerp_axis(a.z, b.z, t))
+
+func lerp_axis(a, b, t):
+	return a + (b - a) * t
+
+func cube_round(cube: Vector3):
+	var rx = round(cube.x)
+	var ry = round(cube.y)
+	var rz = round(cube.z)
+
+	var x_diff = abs(rx - cube.x)
+	var y_diff = abs(ry - cube.y)
+	var z_diff = abs(rz - cube.z)
+
+	if x_diff > y_diff and x_diff > z_diff:
+		rx = -ry-rz
+	elif y_diff > z_diff:
+		ry = -rx-rz
+	else:
+		rz = -rx-ry
+
+	return Vector3(rx, ry, rz)
