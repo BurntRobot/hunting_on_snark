@@ -28,9 +28,9 @@ func _process(delta):
 		var _points = []
 		for i in _cube_points:
 			_points.append(tiles.map_to_world(cube_to_oddq(i))+CENTER_OF_HEX)
+			points_tiles.set_cellv(cube_to_oddq(i), 2)
 		_path = PoolVector2Array(_points)
-		movement_line.points = _path
-		print(_path)
+		#movement_line.points = _path
 		print('----- -----')
 
 func cube_distance(a, b):
