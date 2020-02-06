@@ -3,35 +3,41 @@ extends Node2D
 onready var tiles = $HexMap
 onready var points_tiles = $HexPoints
 onready var character = $Character
-onready var movement_line = $Line2D
+onready var walk_line = $WalkLine
+onready var step_line = $StepLine
 var CENTER_OF_HEX = Vector2(12, 16)
 
 
 func _process(delta):
-	#  TODO: Batching player to nearest tile
+	# TODO: Batching player to nearest tile
 	var _mouse_pos = get_local_mouse_position()
-	var _tile_pos = tiles.map_to_world(tiles.world_to_map(_mouse_pos))
-	var charpos_in_cube = oddq_to_cube(tiles.world_to_map(character.position))
 	var mousepos_in_cube = oddq_to_cube(tiles.world_to_map(_mouse_pos))
-	print("Cube: ", charpos_in_cube, mousepos_in_cube)
+	
+	var _tile_pos = tiles.map_to_world(tiles.world_to_map(_mouse_pos))
 	_tile_pos += CENTER_OF_HEX
-	movement_line.points = PoolVector2Array([])
+	
+	character.position = tiles.map_to_world(tiles.world_to_map(character.position))
+	character.position += CENTER_OF_HEX
+	var charpos_in_cube = oddq_to_cube(tiles.world_to_map(character.position))
+	
 	if character.position != _tile_pos:
 		points_tiles.clear()
 		var _path = PoolVector2Array([character.position, _tile_pos])
-		if Input.is_action_just_pressed("move"):
-			character.position = _tile_pos
 		points_tiles.set_cellv(tiles.world_to_map(character.position), 2)
 		points_tiles.set_cellv(tiles.world_to_map(_mouse_pos), 2)
-		print("Distance: ", cube_distance(charpos_in_cube, mousepos_in_cube))
 		var _cube_points = cube_linedraw(charpos_in_cube, mousepos_in_cube)
 		var _points = []
 		for i in _cube_points:
 			_points.append(tiles.map_to_world(cube_to_oddq(i))+CENTER_OF_HEX)
 			points_tiles.set_cellv(cube_to_oddq(i), 2)
 		_path = PoolVector2Array(_points)
-		#movement_line.points = _path
-		print('----- -----')
+		for i in range(0, character.steps+1):
+			points_tiles.set_cellv(cube_to_oddq(_cube_points[i]), 3)
+		
+		if Input.is_action_just_pressed("move"):
+			#character.position = _tile_pos
+			character.position = _path[character.steps]
+		#walk_line.points = _path
 
 func cube_distance(a, b):
 	return [abs(a.x - b.x), abs(a.y - b.y), abs(a.z - b.z)].max()

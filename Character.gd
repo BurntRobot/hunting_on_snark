@@ -1,10 +1,10 @@
 extends Sprite
 
 export(String) var character_name
-export(String, "Fast", "Stealthy") var reaction
-export(String, "Strong", "Tough") var build
-export(String, "Lucky", "Sensitive") var mind
-export(String, "Hero", "Mob", "Boss") var character_type
+export(String, "Fast", "Stealthy") var reaction = "Fast"
+export(String, "Strong", "Tough") var build = "Strong"
+export(String, "Lucky", "Sensitive") var mind = "Lucky"
+export(String, "Hero", "Mob", "Boss") var character_type = "Hero"
 
 var steps
 var noise
@@ -17,41 +17,41 @@ var joker
 var health
 
 func _ready():
-	get_reaction_stats()
-	get_build_stats()
-	get_mind_stats()
-	get_health()
+	self.set_reaction_stats()
+	self.set_build_stats()
+	self.set_mind_stats()
+	self.set_health()
 
-func get_reaction_stats():
-	if reaction == "Fast":
-		steps = 2
-		noise = 2
-	elif reaction == "Stealthy":
-		steps = 1
-		noise = 1
+func set_reaction_stats():
+	if self.reaction == "Fast":
+		self.steps = 2
+		self.noise = 2
+	elif self.reaction == "Stealthy":
+		self.steps = 1
+		self.noise = 1
 
-func get_build_stats():
-	if build == "Strong":
-		attack = 3
-		defense = 1
-	elif build == "Tough":
-		attack = 1
-		defense = 3
+func set_build_stats():
+	if self.build == "Strong":
+		self.attack = 3
+		self.defense = 1
+	elif self.build == "Tough":
+		self.attack = 1
+		self.defense = 3
 
-func get_mind_stats():
-	if mind == "Lucky":
-		sight_radius = 2
-		boojum_radar = 1/2
-		miss = 1
-		joker = 1
-	elif mind == "Sensitive":
-		sight_radius = 3
-		boojum_radar = 2/3
-		miss = 2
-		joker = 0
+func set_mind_stats():
+	if self.mind == "Lucky":
+		self.sight_radius = 2
+		self.boojum_radar = 1/2
+		self.miss = 1
+		self.joker = 1
+	elif self.mind == "Sensitive":
+		self.sight_radius = 3
+		self.boojum_radar = 2/3
+		self.miss = 2
+		self.joker = 0
 
-func get_health():
-	if character_type == "Hero":
-		health = 3
+func set_health():
+	if self.character_type == "Hero":
+		self.health = 3
 	else:
-		health = 1
+		self.health = 1
