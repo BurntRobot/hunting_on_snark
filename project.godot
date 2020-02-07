@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Object",
 "class": "PointTransistor",
 "language": "GDScript",
-"path": "res://Board/PointTransistor.gd"
+"path": "res://HexMath/PointTransistor.gd"
 } ]
 _global_script_class_icons={
 "PointTransistor": ""
