@@ -2,6 +2,7 @@ extends Object
 
 class_name PointTransistor
 
+
 static func oddq_to_cube(_hex: Vector2):
 	var x0 = _hex.x
 	var z0 = _hex.y - (_hex.x - (int(_hex.x)&1)) / 2

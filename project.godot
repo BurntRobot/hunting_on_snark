@@ -10,11 +10,17 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Object",
+"class": "HexMovement",
+"language": "GDScript",
+"path": "res://HexMath/HexMovement.gd"
+}, {
+"base": "Object",
 "class": "PointTransistor",
 "language": "GDScript",
 "path": "res://HexMath/PointTransistor.gd"
 } ]
 _global_script_class_icons={
+"HexMovement": "",
 "PointTransistor": ""
 }
 
